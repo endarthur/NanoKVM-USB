@@ -68,9 +68,27 @@ Good for: Simple Bluetooth KVM, no remote control needed
 
 ---
 
-### 2. Kontroller (Open Source)
+### 2. WearMouse by Google (⭐ Best Reference!)
+
+**GitHub:** [ginkage/wearmouse](https://github.com/ginkage/wearmouse)
+
+**Features:**
+- ✅ **Semi-official Google sample code** (by Googler)
+- ✅ Full implementation (keyboard + mouse)
+- ✅ Actively maintained
+- ✅ Proper HID descriptors, QoS, battery callbacks
+- ✅ Works on phones (not just Wear OS)
+- ✅ Available on Google Play for testing
+- ✅ Clean, modern Kotlin code
+
+**Use case:** Primary reference for custom app development
+
+---
+
+### 3. Kontroller (Open Source)
 
 **GitHub:** [rom1v/kontroller](https://github.com/rom1v/kontroller)
+**Updated fork:** [arpruss/Kontroller](https://github.com/raghavk92/Kontroller) (October 2024)
 
 **Features:**
 - ✅ Open source (can modify for our needs)
@@ -78,12 +96,13 @@ Good for: Simple Bluetooth KVM, no remote control needed
 - ✅ Simple codebase (~500 lines Kotlin)
 - ❌ No mouse support (keyboard only)
 - ❌ No remote control API
+- ⚠️ Original abandoned (2019), but has recent fork
 
-**Use case:** Reference implementation for custom app
+**Use case:** Secondary reference (simpler than WearMouse)
 
 ---
 
-### 3. Serverless Bluetooth Keyboard & Mouse (Free)
+### 4. Serverless Bluetooth Keyboard & Mouse (Free)
 
 **Google Play:** [Serverless Bluetooth Keyboard & Mouse](https://play.google.com/store/apps/details?id=io.appground.serverless)
 
@@ -425,6 +444,24 @@ Capacitor/Cordova **cannot** be used for this project because:
 2. Automatic connection to paired target PC
    (no re-pairing needed)
 ```
+
+---
+
+## Tested Devices
+
+**Confirmed working with "Bluetooth Keyboard & Mouse" app:**
+- ✅ **Samsung Galaxy S24+** (Android 14+) - Tested, works perfectly
+- ✅ Most Android 9+ devices should work (BluetoothHidDevice API available)
+
+**Known issues:**
+- ⚠️ Some manufacturers (Nokia, Moto, OnePlus 5T/6) have disabled HID Device profile
+- ⚠️ Check compatibility: Settings → Bluetooth → Available profiles should show "HID Device"
+
+**Testing your device:**
+1. Install "Bluetooth Keyboard & Mouse" from Play Store
+2. Enable HID mode in app
+3. Pair with target PC
+4. If pairing shows keyboard icon (🎹), it works!
 
 ---
 

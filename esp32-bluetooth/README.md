@@ -84,8 +84,27 @@ Target PC ─WebRTC P2P─> Controller PC (works across networks)
 **Option B: M5Stack Cardputer** ($40)
 - M5Stack Cardputer v1.1 (ESP32-S3FN8)
 - USB-C cable
+- **Or any ESP32-S3 board** with USB OTG ($5-15)
 
 **Both provide:** Wireless keyboard/mouse control via Bluetooth
+
+### Alternative Hardware
+
+**Any ESP32-S3 board works!** The Cardputer is convenient (built-in screen/keyboard/battery), but you can use:
+- **ESP32-S3 DevKit** ($7) - Bare board, requires external power
+- **Seeed XIAO ESP32-S3** ($5) - Tiny, USB-C, no screen
+- **Waveshare ESP32-S3-Tiny** ($8) - Compact with battery connector
+- **LilyGO T-Display-S3** ($12) - Has screen, no keyboard
+- **Any ESP32-S3 with USB OTG support**
+
+**Raspberry Pi Zero alternatives:**
+- **Pi Zero W** ($10) + USB gadget mode - Would work but requires Python/Linux setup
+- **Pi Zero 2 W** ($15) - Faster, same USB gadget capability
+
+**NOT compatible:**
+- ❌ Pi Pico W / Pico 2 W - No USB OTG
+- ❌ Regular ESP32 (non-S3) - No USB OTG
+- ❌ ESP8266 - No USB at all
 
 ### Optional Add-ons
 
