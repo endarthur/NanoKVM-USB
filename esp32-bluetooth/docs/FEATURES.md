@@ -7,6 +7,32 @@
 4. **Status Display** - Connection, battery, command count
 5. **Emergency Controls** - ESC key disconnect
 
+### Implemented ✅
+
+#### USB Wake (Remote Wakeup)
+**Status:** ✅ **IMPLEMENTED**
+
+Press 'W' on Cardputer to wake target from sleep/suspend mode.
+
+```cpp
+// Press W key to show wake menu
+// Select U for USB wake
+bool wakeTargetComputer() {
+  return tud_remote_wakeup();
+}
+```
+
+**Features:**
+- ✅ USB resume signal (USB 2.0 spec compliant)
+- ✅ Works for Sleep (S3) and Hibernate (S4)
+- ✅ Interactive menu with status feedback
+- ✅ Error handling and diagnostics
+- ✅ No network/WiFi required
+
+**Benefit:** Wake target computer instantly from sleep mode
+
+**See:** `docs/WAKE.md` for complete setup guide
+
 ### High Priority (Easy Wins) 🟢
 
 #### 1. Battery Optimization
@@ -186,6 +212,39 @@ void syncClipboard(String text) {
 }
 ```
 
+### Medium Priority 🟡 (continued)
+
+#### 10. Wake-on-LAN
+**Benefit:** Wake target from complete shutdown (S5)
+
+```cpp
+void sendWakeOnLAN(uint8_t mac[6]) {
+  // Connect to WiFi
+  WiFi.begin(ssid, password);
+
+  // Build magic packet
+  uint8_t magicPacket[102];
+  for (int i = 0; i < 6; i++) magicPacket[i] = 0xFF;
+  for (int i = 0; i < 16; i++) memcpy(&magicPacket[6 + i * 6], mac, 6);
+
+  // Send UDP broadcast
+  WiFiUDP udp;
+  udp.beginPacket(IPAddress(255,255,255,255), 9);
+  udp.write(magicPacket, sizeof(magicPacket));
+  udp.endPacket();
+}
+```
+
+**Requirements:**
+- Target connected via Ethernet
+- BIOS Wake-on-LAN enabled
+- Cardputer WiFi connection
+- Target MAC address known
+
+**Battery impact:** Moderate (WiFi use)
+**Complexity:** ⭐⭐⭐
+**See:** `docs/WAKE.md` for implementation guide
+
 ### Advanced Features 🔴
 
 #### 11. Video Streaming Integration
@@ -294,22 +353,7 @@ void sendIRCommand(uint32_t code) {
 }
 ```
 
-#### 19. Wake-on-LAN
-**Benefit:** Wake target computer remotely
-
-```cpp
-#include <WiFi.h>
-#include <WiFiUdp.h>
-
-void sendWOL(uint8_t mac[6]) {
-  // Send magic packet
-  WiFiUDP udp;
-  udp.beginPacket(IPAddress(255,255,255,255), 9);
-  // ... WOL packet format
-}
-```
-
-#### 20. SSH Terminal
+#### 19. SSH Terminal
 **Benefit:** Built-in SSH client on Cardputer
 
 ```cpp
@@ -326,6 +370,7 @@ void connectSSH(String host, String user, String pass) {
 
 | Feature | Complexity | Battery Impact | Memory Use | Usefulness |
 |---------|-----------|----------------|------------|------------|
+| USB Wake | ⭐ | - | ➕ | ⭐⭐⭐⭐⭐ |
 | Battery Optimization | ⭐ | ➖➖➖ | ➕ | ⭐⭐⭐⭐⭐ |
 | OTA Updates | ⭐⭐ | ➕ | ➕➕ | ⭐⭐⭐⭐ |
 | Signal Indicator | ⭐ | ➕ | ➕ | ⭐⭐⭐⭐ |
@@ -335,6 +380,7 @@ void connectSSH(String host, String user, String pass) {
 | Multi-Computer | ⭐⭐⭐ | - | ➕➕ | ⭐⭐⭐ |
 | Web Config | ⭐⭐⭐ | ➕➕ | ➕➕➕ | ⭐⭐⭐⭐ |
 | Gesture Mouse | ⭐⭐ | ➕ | ➕ | ⭐⭐ |
+| Wake-on-LAN | ⭐⭐ | ➕➕ | ➕➕ | ⭐⭐⭐⭐ |
 | Clipboard Sync | ⭐⭐ | ➕ | ➕ | ⭐⭐⭐⭐ |
 | Video Preview | ⭐⭐⭐⭐ | ➕➕➕ | ➕➕➕➕ | ⭐⭐ |
 | KVM Switching | ⭐⭐⭐ | - | ➕ | ⭐⭐⭐⭐ |
@@ -344,7 +390,6 @@ void connectSSH(String host, String user, String pass) {
 | RDP/VNC | ⭐⭐⭐⭐⭐ | ➕➕➕ | ➕➕➕➕➕ | ⭐⭐ |
 | FIDO2 Token | ⭐⭐⭐⭐ | ➕ | ➕➕ | ⭐⭐⭐ |
 | IR Blaster | ⭐⭐ | ➕ | ➕ | ⭐⭐⭐ |
-| Wake-on-LAN | ⭐⭐ | ➕ | ➕➕ | ⭐⭐⭐⭐ |
 | SSH Terminal | ⭐⭐⭐⭐ | ➕➕ | ➕➕➕➕ | ⭐⭐⭐⭐ |
 
 **Legend:**
@@ -355,19 +400,20 @@ void connectSSH(String host, String user, String pass) {
 ## 🎯 Recommended Implementation Order
 
 **Phase 1 (MVP+):**
-1. Auto-Reconnect
-2. Signal Indicator
-3. Battery Optimization
+1. ✅ USB Wake (DONE!)
+2. Auto-Reconnect
+3. Signal Indicator
+4. Battery Optimization
 
 **Phase 2 (Power User):**
-4. OTA Updates
-5. Macros
-6. Clipboard Sync
+5. OTA Updates
+6. Macros
+7. Clipboard Sync
+8. Wake-on-LAN
 
 **Phase 3 (Advanced):**
-7. Web Config
-8. Multi-Computer
-9. Wake-on-LAN
+9. Web Config
+10. Multi-Computer
 
 **Phase 4 (Experimental):**
 10. Pick based on user feedback

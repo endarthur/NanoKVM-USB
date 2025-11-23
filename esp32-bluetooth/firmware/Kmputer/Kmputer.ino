@@ -62,6 +62,8 @@ void updateDisplay();
 void handleKeyboardCommand(uint8_t* data, size_t len);
 void handleMouseAbsCommand(uint8_t* data, size_t len);
 void handleMouseRelCommand(uint8_t* data, size_t len);
+bool wakeTargetComputer();
+void showWakeMenu();
 
 /**
  * BLE Server Callbacks
@@ -203,6 +205,10 @@ void setup() {
     USB.productName("Kmputer Controller");
     USB.manufacturerName("NanoKVM Project");
     USB.firmwareVersion("1.0.0");
+
+    // Enable USB remote wakeup capability
+    USB.enableRemoteWakeup(true);
+
     USB.begin();
 
     // Initialize HID devices
@@ -282,14 +288,22 @@ void loop() {
         }
     }
 
-    // Handle emergency disconnect (ESC key)
+    // Handle keyboard shortcuts
     if (M5Cardputer.Keyboard.isChange() && M5Cardputer.Keyboard.isPressed()) {
         String key = M5Cardputer.Keyboard.keysState().word;
+
+        // ESC = Emergency disconnect
         if (key == "ESC") {
             Serial.println("Emergency disconnect requested");
             if (pServer) {
                 pServer->disconnect(pServer->getConnId());
             }
+        }
+
+        // W = Wake target computer
+        if (key == "w" || key == "W") {
+            Serial.println("Wake target requested");
+            showWakeMenu();
         }
     }
 
@@ -325,7 +339,7 @@ void updateDisplay() {
 
     M5Cardputer.Display.setTextColor(DARKGREY);
     M5Cardputer.Display.setCursor(10, 110);
-    M5Cardputer.Display.println("Press ESC to disconnect");
+    M5Cardputer.Display.println("ESC=Disconnect W=Wake");
 }
 
 /**
@@ -443,4 +457,115 @@ void handleMouseRelCommand(uint8_t* data, size_t len) {
     Mouse.move(dx, dy, scroll, buttons);
 
     Serial.printf("MS_REL: btn=0x%02X dx=%d dy=%d scroll=%d\n", buttons, dx, dy, scroll);
+}
+
+/**
+ * Wake target computer via USB resume signal
+ * Works for Sleep (S3) and sometimes Hibernate (S4)
+ */
+bool wakeTargetComputer() {
+    M5Cardputer.Display.clear();
+    M5Cardputer.Display.setTextSize(2);
+    M5Cardputer.Display.setCursor(10, 10);
+    M5Cardputer.Display.println("USB Wake");
+    M5Cardputer.Display.setTextSize(1);
+    M5Cardputer.Display.setCursor(10, 40);
+
+    if (!USB.connected()) {
+        Serial.println("USB not connected - cannot send wake signal");
+        M5Cardputer.Display.println("ERROR: USB not connected");
+        M5Cardputer.Display.println("");
+        M5Cardputer.Display.println("Target must be in sleep");
+        M5Cardputer.Display.println("mode, not shutdown.");
+        delay(3000);
+        return false;
+    }
+
+    // Send USB remote wakeup signal
+    // TinyUSB handles the 1-15ms timing automatically
+    bool success = tud_remote_wakeup();
+
+    if (success) {
+        Serial.println("Wake signal sent successfully");
+        M5Cardputer.Display.println("Wake signal sent!");
+        M5Cardputer.Display.println("");
+        M5Cardputer.Display.println("Target should wake up");
+        M5Cardputer.Display.println("in 1-3 seconds...");
+        M5Cardputer.Display.println("");
+        M5Cardputer.Display.setTextColor(DARKGREY);
+        M5Cardputer.Display.println("Note: Only works if");
+        M5Cardputer.Display.println("target is in Sleep mode");
+        M5Cardputer.Display.println("and USB wake is enabled");
+    } else {
+        Serial.println("Failed to send wake signal");
+        M5Cardputer.Display.println("Wake signal FAILED");
+        M5Cardputer.Display.println("");
+        M5Cardputer.Display.println("Possible reasons:");
+        M5Cardputer.Display.println("- Target is shutdown (S5)");
+        M5Cardputer.Display.println("- USB wake not enabled");
+        M5Cardputer.Display.println("- Target unplugged");
+    }
+
+    delay(3000);
+    updateDisplay();
+    return success;
+}
+
+/**
+ * Show wake menu with options
+ */
+void showWakeMenu() {
+    M5Cardputer.Display.clear();
+    M5Cardputer.Display.setTextColor(YELLOW);
+    M5Cardputer.Display.setTextSize(2);
+    M5Cardputer.Display.setCursor(10, 10);
+    M5Cardputer.Display.println("Wake Target");
+
+    M5Cardputer.Display.setTextColor(WHITE);
+    M5Cardputer.Display.setTextSize(1);
+    M5Cardputer.Display.setCursor(10, 40);
+    M5Cardputer.Display.println("U = USB Wake (Sleep/S3)");
+    M5Cardputer.Display.println("    Works if target is");
+    M5Cardputer.Display.println("    in sleep mode");
+    M5Cardputer.Display.println("");
+    M5Cardputer.Display.setTextColor(DARKGREY);
+    M5Cardputer.Display.println("W = WoL (Shutdown/S5)");
+    M5Cardputer.Display.println("    Not yet implemented");
+    M5Cardputer.Display.println("");
+    M5Cardputer.Display.setTextColor(WHITE);
+    M5Cardputer.Display.println("ESC = Cancel");
+
+    // Wait for user input
+    bool waiting = true;
+    while (waiting) {
+        M5Cardputer.update();
+
+        if (M5Cardputer.Keyboard.isChange() && M5Cardputer.Keyboard.isPressed()) {
+            String key = M5Cardputer.Keyboard.keysState().word;
+
+            if (key == "u" || key == "U") {
+                wakeTargetComputer();
+                waiting = false;
+            }
+            else if (key == "w" || key == "W") {
+                M5Cardputer.Display.clear();
+                M5Cardputer.Display.setCursor(10, 10);
+                M5Cardputer.Display.println("Wake-on-LAN");
+                M5Cardputer.Display.println("");
+                M5Cardputer.Display.println("Not yet implemented");
+                M5Cardputer.Display.println("");
+                M5Cardputer.Display.println("See docs/WAKE.md for");
+                M5Cardputer.Display.println("implementation guide");
+                delay(3000);
+                waiting = false;
+            }
+            else if (key == "ESC") {
+                waiting = false;
+            }
+        }
+
+        delay(10);
+    }
+
+    updateDisplay();
 }
