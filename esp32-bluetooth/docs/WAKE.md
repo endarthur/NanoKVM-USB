@@ -1,6 +1,6 @@
-# Wake Computer Guide for Kmputer
+# Wake Computer Guide for RelayKVM
 
-Complete guide to waking the target computer from sleep or shutdown using Kmputer.
+Complete guide to waking the target computer from sleep or shutdown using RelayKVM.
 
 ## 🎯 Quick Reference
 
@@ -37,7 +37,7 @@ Complete guide to waking the target computer from sleep or shutdown using Kmpute
 1. **Device Manager:**
    - Right-click Start → Device Manager
    - Expand "Keyboards"
-   - Find "Kmputer Controller" (VID_FEED&PID_AE01)
+   - Find "RelayKVM Controller" (VID_FEED&PID_AE01)
    - Right-click → Properties
    - Power Management tab
    - ☑ "Allow this device to wake the computer"
@@ -58,9 +58,9 @@ Complete guide to waking the target computer from sleep or shutdown using Kmpute
 #### Linux (Ubuntu/Debian)
 
 ```bash
-# Find Kmputer USB device
+# Find RelayKVM USB device
 lsusb | grep -i kmputer
-# Output: Bus 001 Device 005: ID feed:ae01 Kmputer Controller
+# Output: Bus 001 Device 005: ID feed:ae01 RelayKVM Controller
 
 # Find device path
 ls -l /sys/bus/usb/devices/*/idVendor | xargs grep -l feed
@@ -141,7 +141,7 @@ Most modern motherboards support USB wake by default, but verify:
 - Check USB-C cable is securely connected
 - Try different USB port on target
 - Use data-capable USB cable (not charge-only)
-- Check Device Manager shows Kmputer
+- Check Device Manager shows RelayKVM
 
 #### "Wake signal FAILED"
 
@@ -373,7 +373,7 @@ ifconfig en0 | grep ether
 
 ### Testing Wake-on-LAN (Current Methods)
 
-Until WoL is implemented in Kmputer, test with these tools:
+Until WoL is implemented in RelayKVM, test with these tools:
 
 #### From Linux/macOS
 
@@ -423,7 +423,7 @@ Before WoL will work:
 - [ ] OS network adapter WoL enabled
 - [ ] Target PC plugged into **power** (AC power, not just battery)
 - [ ] Target MAC address known
-- [ ] Kmputer and target on **same LAN** (or router configured for WoL forwarding)
+- [ ] RelayKVM and target on **same LAN** (or router configured for WoL forwarding)
 
 ### Limitations
 

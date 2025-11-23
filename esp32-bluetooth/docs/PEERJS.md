@@ -383,7 +383,7 @@ Since we already have HID relay (Cardputer or Android), we can auto-type the sen
 ### Cardputer Firmware Addition
 
 ```cpp
-// Add to Kmputer.ino
+// Add to RelayKVM.ino
 void autotypePeerJSUrl(const char* peerId) {
     M5Cardputer.Display.println("Auto-typing PeerJS URL...");
 

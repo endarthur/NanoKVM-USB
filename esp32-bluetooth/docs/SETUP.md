@@ -1,4 +1,4 @@
-# Kmputer Setup Guide
+# RelayKVM Setup Guide
 
 ## Prerequisites
 
@@ -73,11 +73,11 @@
 
 Follow installation steps above. On first boot, you should see:
 ```
-Kmputer: Starting...
+RelayKVM: Starting...
 USB HID ready!
 BLE ready!
 Waiting for connection...
-Device: Kmputer
+Device: RelayKVM
 ```
 
 ### 2. Connect to Target Computer
@@ -85,7 +85,7 @@ Device: Kmputer
 1. Plug Cardputer into target computer via USB-C
 2. Target should recognize:
    - Vendor: NanoKVM Project
-   - Product: Kmputer Controller
+   - Product: RelayKVM Controller
    - VID: 0xFEED
    - PID: 0xAE01
 
@@ -97,7 +97,7 @@ Device: Kmputer
 ```bash
 bluetoothctl
 scan on
-# Wait for "Kmputer" to appear
+# Wait for "RelayKVM" to appear
 pair [MAC_ADDRESS]
 # Enter PIN shown on Cardputer screen
 connect [MAC_ADDRESS]
@@ -105,13 +105,13 @@ connect [MAC_ADDRESS]
 
 **On Windows:**
 1. Settings → Bluetooth & devices → Add device
-2. Select "Kmputer"
+2. Select "RelayKVM"
 3. Enter PIN shown on Cardputer screen
 4. Click "Connect"
 
 **On macOS:**
 1. System Preferences → Bluetooth
-2. Select "Kmputer"
+2. Select "RelayKVM"
 3. Enter PIN shown on Cardputer screen
 
 ### 4. Set Up Video Capture
@@ -137,7 +137,7 @@ export class BluetoothPort {
 
   async connect() {
     this.device = await navigator.bluetooth.requestDevice({
-      filters: [{ name: 'Kmputer' }],
+      filters: [{ name: 'RelayKVM' }],
       optionalServices: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']
     });
 
@@ -205,7 +205,7 @@ Add to `setup()`:
 ```cpp
 // Test keyboard
 delay(3000);
-Keyboard.print("Hello from Kmputer!");
+Keyboard.print("Hello from RelayKVM!");
 
 // Test mouse
 Mouse.move(100, 100);
@@ -215,7 +215,7 @@ Mouse.click(MOUSE_LEFT);
 ### Test Bluetooth (without USB HID)
 
 Use a BLE scanner app (nRF Connect, LightBlue) to:
-1. Scan for "Kmputer"
+1. Scan for "RelayKVM"
 2. Connect to service 6E400001-...
 3. Write to characteristic 6E400002-...
 4. Check serial monitor for received data

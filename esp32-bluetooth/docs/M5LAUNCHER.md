@@ -1,6 +1,6 @@
-# M5Launcher Compatibility for Kmputer
+# M5Launcher Compatibility for RelayKVM
 
-This guide explains how to make Kmputer bootable from M5Launcher, allowing you to switch between different firmwares on your Cardputer.
+This guide explains how to make RelayKVM bootable from M5Launcher, allowing you to switch between different firmwares on your Cardputer.
 
 ## 🎯 What is M5Launcher?
 
@@ -14,7 +14,7 @@ M5Launcher is like TWRP/Grub for ESP32 devices:
 
 ```
 Power On → M5Launcher (partition 0)
-           ├── Kmputer (OTA partition 1)
+           ├── RelayKVM (OTA partition 1)
            ├── Bruce (OTA partition 2)
            ├── MicroHydra (FAT partition)
            └── Other Apps...
@@ -70,7 +70,7 @@ def create_ota_binary(source, target, env):
     shutil.copy(firmware_path, ota_path)
 
     print(f"Created OTA binary: {ota_path}")
-    print(f"Copy this file to SD card: /firmware/Kmputer.bin")
+    print(f"Copy this file to SD card: /firmware/RelayKVM.bin")
 
 env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", create_ota_binary)
 ```
@@ -97,19 +97,19 @@ pio run -e m5stack-cardputer-ota
 
 3. **Copy binary:**
    ```bash
-   cp .pio/build/*/firmware_ota.bin /path/to/sd/firmware/Kmputer.bin
+   cp .pio/build/*/firmware_ota.bin /path/to/sd/firmware/RelayKVM.bin
    ```
 
-4. **Create metadata file** `/firmware/Kmputer.json`:
+4. **Create metadata file** `/firmware/RelayKVM.json`:
    ```json
    {
-     "name": "Kmputer",
+     "name": "RelayKVM",
      "version": "1.0.0",
      "description": "Bluetooth KVM Controller for M5Stack Cardputer",
      "author": "Arthur Endlein",
      "category": "Utility",
      "icon": "🎮",
-     "firmware": "Kmputer.bin",
+     "firmware": "RelayKVM.bin",
      "size": 1234567,
      "checksum": "sha256:..."
    }
@@ -117,7 +117,7 @@ pio run -e m5stack-cardputer-ota
 
 5. **Insert SD card** into Cardputer
 
-6. **Boot M5Launcher** and select Kmputer from menu
+6. **Boot M5Launcher** and select RelayKVM from menu
 
 ### Method 2: OTA Upload (Advanced)
 
@@ -132,14 +132,14 @@ esptool.py --port /dev/ttyUSB0 write_flash 0x210000 firmware_ota.bin
 
 ### Create Icon (Optional)
 
-Create `Kmputer_icon.bmp` (64x64, 16-bit color):
+Create `RelayKVM_icon.bmp` (64x64, 16-bit color):
 
 ```bash
 # Use ImageMagick to convert
-convert kmputer_logo.png -resize 64x64 -depth 16 Kmputer_icon.bmp
+convert kmputer_logo.png -resize 64x64 -depth 16 RelayKVM_icon.bmp
 ```
 
-Place in `/firmware/icons/Kmputer_icon.bmp`
+Place in `/firmware/icons/RelayKVM_icon.bmp`
 
 ### Menu Configuration
 
@@ -151,10 +151,10 @@ Create `/launcher/config.json`:
 {
   "firmwares": [
     {
-      "name": "Kmputer",
-      "file": "/firmware/Kmputer.bin",
+      "name": "RelayKVM",
+      "file": "/firmware/RelayKVM.bin",
       "description": "Bluetooth KVM\nWireless control",
-      "icon": "/firmware/icons/Kmputer_icon.bmp",
+      "icon": "/firmware/icons/RelayKVM_icon.bmp",
       "partition": "ota_0",
       "priority": 1
     }
@@ -164,7 +164,7 @@ Create `/launcher/config.json`:
 
 ## 🔄 Exit to Launcher
 
-Add functionality to Kmputer firmware to reboot to launcher:
+Add functionality to RelayKVM firmware to reboot to launcher:
 
 ```cpp
 #include <esp_ota_ops.h>
@@ -209,7 +209,7 @@ void loop() {
 │      M5 LAUNCHER v2.0      │
 ├────────────────────────────┤
 │                            │
-│  🎮 Kmputer      v1.0.0   │
+│  🎮 RelayKVM      v1.0.0   │
 │     Bluetooth KVM          │
 │     Press [A] to boot      │
 │                            │
@@ -232,13 +232,13 @@ M5Launcher uses custom partition table:
 nvs,        data, nvs,      0x9000,   0x5000,
 otadata,    data, ota,      0xe000,   0x2000,
 factory,    app,  factory,  0x10000,  0x200000, # M5Launcher
-ota_0,      app,  ota_0,    0x210000, 0x400000, # Kmputer
+ota_0,      app,  ota_0,    0x210000, 0x400000, # RelayKVM
 ota_1,      app,  ota_1,    0x610000, 0x400000, # Other firmware
 spiffs,     data, spiffs,   0xa10000, 0x100000, # Config
 fat,        data, fat,      0xb10000, 0x4F0000, # MicroPython
 ```
 
-**Kmputer lives in `ota_0` (0x210000 - 0x610000 = 4MB)**
+**RelayKVM lives in `ota_0` (0x210000 - 0x610000 = 4MB)**
 
 ## 🔧 Development Workflow
 
@@ -252,12 +252,12 @@ pio run -t upload
 pio run -e m5stack-cardputer-ota
 ```
 
-### Updating Kmputer via Launcher
+### Updating RelayKVM via Launcher
 
 1. Build new version
-2. Copy `Kmputer.bin` to SD card (overwrite old)
+2. Copy `RelayKVM.bin` to SD card (overwrite old)
 3. Reboot to launcher
-4. Select Kmputer → Press [U] to update
+4. Select RelayKVM → Press [U] to update
 5. Launcher will flash new binary
 
 ## 🎯 Launcher Features to Leverage
@@ -287,14 +287,14 @@ void setup() {
 M5Launcher can read metadata from firmware:
 
 ```cpp
-const char* FIRMWARE_NAME = "Kmputer";
+const char* FIRMWARE_NAME = "RelayKVM";
 const char* FIRMWARE_VERSION = "1.0.0";
 const char* FIRMWARE_AUTHOR = "Arthur Endlein";
 
 // M5Launcher scans for these strings
 __attribute__((section(".rodata")))
 const char metadata[] = "FIRMWARE_META:{"
-  "\"name\":\"Kmputer\","
+  "\"name\":\"RelayKVM\","
   "\"version\":\"1.0.0\","
   "\"author\":\"Arthur Endlein\""
 "}";
@@ -319,7 +319,7 @@ if (M5Cardputer.Keyboard.isKeyPressed(KEY_FN)) {
 1. Binary size < 4MB (ota_0 partition limit)
 2. Binary is compiled with correct partition table
 3. SD card formatted as FAT32
-4. File named exactly `Kmputer.bin` (case-sensitive)
+4. File named exactly `RelayKVM.bin` (case-sensitive)
 
 **Fix:**
 ```bash
@@ -331,7 +331,7 @@ pio run -t menuconfig
 # → Partition Table → Custom partition CSV file
 ```
 
-### "Launcher doesn't show Kmputer"
+### "Launcher doesn't show RelayKVM"
 
 **Check:**
 1. File in `/firmware/` directory (not root)
@@ -353,22 +353,22 @@ ls /firmware/
    esptool.py --port /dev/ttyUSB0 erase_flash
    # Re-flash M5Launcher
    ```
-3. Re-add Kmputer binary
+3. Re-add RelayKVM binary
 
 ## 📦 Distribution
 
 ### Release Package
 
-Create `Kmputer_v1.0.0_M5Launcher.zip`:
+Create `RelayKVM_v1.0.0_M5Launcher.zip`:
 
 ```
-Kmputer_v1.0.0_M5Launcher.zip
+RelayKVM_v1.0.0_M5Launcher.zip
 ├── README.txt (installation instructions)
 ├── firmware/
-│   ├── Kmputer.bin
-│   ├── Kmputer.json
+│   ├── RelayKVM.bin
+│   ├── RelayKVM.json
 │   └── icons/
-│       └── Kmputer_icon.bmp
+│       └── RelayKVM_icon.bmp
 └── LICENSE.txt
 ```
 
@@ -389,7 +389,7 @@ INSTALLATION:
 3. Eject SD card
 4. Insert into Cardputer
 5. Power on Cardputer
-6. Navigate to Kmputer in launcher menu
+6. Navigate to RelayKVM in launcher menu
 7. Press [A] to boot
 
 USAGE:
@@ -409,7 +409,7 @@ USAGE:
 
 ## ✅ Summary
 
-**To make Kmputer launcher-compatible:**
+**To make RelayKVM launcher-compatible:**
 1. ✅ Build with OTA partition table
 2. ✅ Create metadata JSON file
 3. ✅ Add "return to launcher" function

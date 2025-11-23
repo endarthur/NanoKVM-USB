@@ -1,8 +1,8 @@
-# Security Considerations for Kmputer
+# Security Considerations for RelayKVM
 
 ## Overview
 
-Kmputer transmits keyboard and mouse input wirelessly, which poses security risks if not properly secured. This document outlines the security measures implemented and recommendations for safe use.
+RelayKVM transmits keyboard and mouse input wirelessly, which poses security risks if not properly secured. This document outlines the security measures implemented and recommendations for safe use.
 
 ## Threat Model
 
@@ -102,7 +102,7 @@ if (key == "ESC") {
 
 ### For High-Security Environments
 
-⚠️ **Kmputer is NOT suitable for:**
+⚠️ **RelayKVM is NOT suitable for:**
 - Military/government classified systems
 - Financial trading terminals
 - Healthcare systems with PHI/PII

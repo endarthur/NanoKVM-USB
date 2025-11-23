@@ -207,7 +207,7 @@ void updateMouseFromIMU() {
 // Via BLE service
 void syncClipboard(String text) {
   // Controller sends clipboard text
-  // Kmputer types it out on target
+  // RelayKVM types it out on target
   Keyboard.print(text);
 }
 ```
@@ -337,7 +337,7 @@ void recordCommand(uint8_t* packet, size_t len) {
 ```cpp
 #include <FIDO2.h>
 
-// Register Kmputer as security key
+// Register RelayKVM as security key
 // Use for passwordless login
 ```
 

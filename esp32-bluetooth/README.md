@@ -1,4 +1,6 @@
-# Kmputer: Wireless Bluetooth KVM
+# RelayKVM: Wireless Bluetooth KVM
+
+> **Named after geological relay ramps** - structures that accommodate displacement between fault segments. This device "relays" HID input between your computers, bridging the gap wirelessly.
 
 Wireless KVM solution with flexible hardware options and multiple video modes, perfect for travel, desk setups, or remote access.
 
@@ -56,7 +58,7 @@ Target PC ─WebRTC P2P─> Controller PC (works across networks)
 **Current (Development):**
 - VID: `0xFEED` (DIY keyboard community standard)
 - PID: `0xAE01` (Arthur Endlein initials)
-- Product: "Kmputer Controller"
+- Product: "RelayKVM Controller"
 - Manufacturer: "NanoKVM Project"
 
 **Future (Production):**
@@ -131,7 +133,7 @@ Target PC ─WebRTC P2P─> Controller PC (works across networks)
 ```
 esp32-bluetooth/
 ├── firmware/                   # ESP32-S3 firmware (Cardputer)
-│   ├── Kmputer/               # Main Arduino sketch
+│   ├── RelayKVM/               # Main Arduino sketch
 │   └── platformio.ini         # PlatformIO config
 ├── android/                    # Android app (to be implemented)
 │   └── README.md              # Android development guide
@@ -159,14 +161,14 @@ esp32-bluetooth/
 
 **1. Flash Firmware**
 ```bash
-cd firmware/Kmputer
+cd firmware/RelayKVM
 pio run -t upload
 ```
 
 **2. Connect to Target PC**
 ```
 1. Plug Cardputer into target PC via USB-C
-2. Target recognizes as "Kmputer Controller" keyboard/mouse
+2. Target recognizes as "RelayKVM Controller" keyboard/mouse
 3. Press 'W' on Cardputer for Wake menu
 ```
 
@@ -174,7 +176,7 @@ pio run -t upload
 ```
 1. Open web interface in browser
 2. Click "Connect via Bluetooth"
-3. Select "Kmputer" device
+3. Select "RelayKVM" device
 4. Start controlling target PC!
 ```
 
@@ -232,7 +234,7 @@ Once tested and stable, we'll submit for official PID allocation:
    - ✅ Hardware + software both open source
 
 2. **Submission Info:**
-   - Project: Kmputer Controller
+   - Project: RelayKVM Controller
    - Description: Bluetooth-controlled USB HID KVM device for ESP32-S3
    - Repository: https://github.com/endarthur/NanoKVM-USB
    - License: GNU GPL v3

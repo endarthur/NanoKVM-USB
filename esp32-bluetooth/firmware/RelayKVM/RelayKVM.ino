@@ -1,5 +1,5 @@
 /**
- * Kmputer: Bluetooth-Controlled USB HID for M5Stack Cardputer
+ * RelayKVM: Bluetooth-Controlled USB HID for M5Stack Cardputer
  *
  * Receives NanoKVM protocol commands via Bluetooth and translates them
  * to USB HID keyboard/mouse events for the target computer.
@@ -187,14 +187,14 @@ void setup() {
     M5Cardputer.begin(cfg);
 
     Serial.begin(115200);
-    Serial.println("Kmputer: Starting...");
+    Serial.println("RelayKVM: Starting...");
 
     // Display startup screen
     M5Cardputer.Display.setRotation(1);
     M5Cardputer.Display.setTextColor(GREEN);
     M5Cardputer.Display.setTextSize(2);
     M5Cardputer.Display.setCursor(10, 10);
-    M5Cardputer.Display.println("Kmputer");
+    M5Cardputer.Display.println("RelayKVM");
     M5Cardputer.Display.setTextSize(1);
     M5Cardputer.Display.setCursor(10, 40);
     M5Cardputer.Display.println("Initializing USB HID...");
@@ -202,7 +202,7 @@ void setup() {
     // Initialize USB with custom VID/PID
     USB.VID(0xFEED); // DIY keyboard community
     USB.PID(0xAE01); // Arthur Endlein initials
-    USB.productName("Kmputer Controller");
+    USB.productName("RelayKVM Controller");
     USB.manufacturerName("NanoKVM Project");
     USB.firmwareVersion("1.0.0");
 
@@ -220,7 +220,7 @@ void setup() {
     M5Cardputer.Display.println("Initializing BLE...");
 
     // Initialize BLE
-    NimBLEDevice::init("Kmputer");
+    NimBLEDevice::init("RelayKVM");
 
     // Set security
     NimBLEDevice::setSecurityAuth(true, true, true); // bonding, MITM, secure connections
@@ -261,9 +261,9 @@ void setup() {
     M5Cardputer.Display.println("BLE ready!");
     M5Cardputer.Display.println("");
     M5Cardputer.Display.println("Waiting for connection...");
-    M5Cardputer.Display.println("Device: Kmputer");
+    M5Cardputer.Display.println("Device: RelayKVM");
 
-    Serial.println("Kmputer: Ready!");
+    Serial.println("RelayKVM: Ready!");
     Serial.printf("VID:PID = 0x%04X:0x%04X\n", 0xFEED, 0xAE01);
 }
 
@@ -320,7 +320,7 @@ void updateDisplay() {
     M5Cardputer.Display.setTextColor(GREEN);
     M5Cardputer.Display.setTextSize(2);
     M5Cardputer.Display.setCursor(10, 10);
-    M5Cardputer.Display.println("Kmputer");
+    M5Cardputer.Display.println("RelayKVM");
 
     M5Cardputer.Display.setTextSize(1);
     M5Cardputer.Display.setCursor(10, 40);
@@ -334,7 +334,7 @@ void updateDisplay() {
         M5Cardputer.Display.setTextColor(YELLOW);
         M5Cardputer.Display.println("Status: WAITING");
         M5Cardputer.Display.println("Advertising as:");
-        M5Cardputer.Display.println("  Kmputer");
+        M5Cardputer.Display.println("  RelayKVM");
     }
 
     M5Cardputer.Display.setTextColor(DARKGREY);

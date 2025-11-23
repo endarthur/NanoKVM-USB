@@ -192,7 +192,7 @@ gnome-network-displays
 2. Target PC: Connect to controller (Win+K)
 3. Controller PC: OBS Virtual Camera running
 4. Controller PC: Open web interface, select OBS-Camera
-5. Controller PC: Connect Bluetooth to Kmputer device
+5. Controller PC: Connect Bluetooth to RelayKVM device
 6. Start controlling target PC!
 ```
 

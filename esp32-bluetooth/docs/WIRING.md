@@ -1,4 +1,4 @@
-# Wiring and Hardware Setup for Kmputer
+# Wiring and Hardware Setup for RelayKVM
 
 ## 🎯 Overview
 
@@ -47,7 +47,7 @@ Good news: **There's almost no wiring needed!** Everything connects via USB cabl
 │            │                 │
 │       ┌────┴────┐            │
 │       │Cardputer│◄───────────┘
-│       │(Kmputer)│
+│       │(RelayKVM)│
 │       └─────────┘
 └──────────────────────────────┘
 ```
@@ -385,7 +385,7 @@ For controlling multiple targets:
 
 Before first use:
 
-- [ ] Cardputer firmware flashed (Kmputer)
+- [ ] Cardputer firmware flashed (RelayKVM)
 - [ ] USB-C cable connected (Cardputer → Target)
 - [ ] HDMI cable connected (Target → Capture card)
 - [ ] USB capture card connected (Capture → Controller)

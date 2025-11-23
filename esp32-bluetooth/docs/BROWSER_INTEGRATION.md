@@ -1,4 +1,4 @@
-# Browser Integration for Kmputer
+# Browser Integration for RelayKVM
 
 This guide shows how to modify the NanoKVM browser app to use Bluetooth instead of Web Serial.
 
@@ -12,7 +12,7 @@ The modification is relatively straightforward:
 
 ## 📊 API Comparison
 
-| Aspect | Web Serial (Original) | Web Bluetooth (Kmputer) |
+| Aspect | Web Serial (Original) | Web Bluetooth (RelayKVM) |
 |--------|----------------------|-------------------------|
 | Browser Support | Chrome, Edge | Chrome, Edge, Opera |
 | Connection Type | USB | Bluetooth LE |
@@ -29,11 +29,11 @@ Create new file: `browser/src/libs/device/bluetooth-adapter.ts`
 
 ```typescript
 /**
- * Bluetooth adapter for Kmputer
+ * Bluetooth adapter for RelayKVM
  * Replaces serial-port.ts with Bluetooth LE connection
  */
 
-// Nordic UART Service UUIDs (compatible with Kmputer firmware)
+// Nordic UART Service UUIDs (compatible with RelayKVM firmware)
 const UART_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
 const UART_TX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
 const UART_RX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
@@ -53,7 +53,7 @@ export class BluetoothAdapter {
       // Request device with filters
       this.device = await navigator.bluetooth.requestDevice({
         filters: [
-          { name: 'Kmputer' },
+          { name: 'RelayKVM' },
           { namePrefix: 'NanoKVM-' }, // Backward compat
           { services: [UART_SERVICE_UUID] }
         ],
@@ -72,11 +72,11 @@ export class BluetoothAdapter {
       console.log('Getting UART Service...');
       const service = await this.server.getPrimaryService(UART_SERVICE_UUID);
 
-      // Get TX characteristic (for sending data to Kmputer)
+      // Get TX characteristic (for sending data to RelayKVM)
       console.log('Getting TX Characteristic...');
       this.txCharacteristic = await service.getCharacteristic(UART_TX_UUID);
 
-      // Get RX characteristic (for receiving data from Kmputer)
+      // Get RX characteristic (for receiving data from RelayKVM)
       console.log('Getting RX Characteristic...');
       this.rxCharacteristic = await service.getCharacteristic(UART_RX_UUID);
 
@@ -99,7 +99,7 @@ export class BluetoothAdapter {
   }
 
   /**
-   * Send data to Kmputer (same format as serial!)
+   * Send data to RelayKVM (same format as serial!)
    */
   async send(data: Uint8Array): Promise<void> {
     if (!this.txCharacteristic) {
@@ -121,7 +121,7 @@ export class BluetoothAdapter {
   }
 
   /**
-   * Handle incoming notifications from Kmputer
+   * Handle incoming notifications from RelayKVM
    */
   private handleNotification(event: Event): void {
     const target = event.target as BluetoothRemoteGATTCharacteristic;
@@ -144,7 +144,7 @@ export class BluetoothAdapter {
   }
 
   /**
-   * Disconnect from Kmputer
+   * Disconnect from RelayKVM
    */
   async disconnect(): Promise<void> {
     if (this.server && this.server.connected) {
@@ -238,7 +238,7 @@ export class Device {
   }
 
   private handleIncomingData(data: Uint8Array): void {
-    // Handle responses from Kmputer (if any)
+    // Handle responses from RelayKVM (if any)
     console.log('Received data:', data);
   }
 
@@ -300,7 +300,7 @@ export const ConnectButton: React.FC = () => {
             onChange={() => setConnectionType('bluetooth')}
             disabled={connected}
           />
-          Bluetooth (Kmputer)
+          Bluetooth (RelayKVM)
         </label>
         <label>
           <input
@@ -317,7 +317,7 @@ export const ConnectButton: React.FC = () => {
       {/* Connect/Disconnect button */}
       {!connected ? (
         <button onClick={handleConnect} className="btn-connect">
-          🔌 Connect to {connectionType === 'bluetooth' ? 'Kmputer' : 'USB Device'}
+          🔌 Connect to {connectionType === 'bluetooth' ? 'RelayKVM' : 'USB Device'}
         </button>
       ) : (
         <div>
@@ -381,7 +381,7 @@ if (!supported) {
    ```javascript
    // Test Bluetooth connection
    const device = await navigator.bluetooth.requestDevice({
-     filters: [{ name: 'Kmputer' }],
+     filters: [{ name: 'RelayKVM' }],
      optionalServices: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']
    });
 
@@ -437,13 +437,13 @@ export class UniversalDevice {
 
 ### "GATT operation failed"
 - Device out of range
-- Kmputer not paired properly
+- RelayKVM not paired properly
 - Try power cycling Cardputer
 
 ### Data not sending
 - Check MTU limits (20 bytes by default)
 - Split large packets
-- Check Kmputer serial output for errors
+- Check RelayKVM serial output for errors
 
 ## 📊 Performance Comparison
 
