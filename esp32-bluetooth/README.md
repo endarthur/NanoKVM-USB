@@ -97,12 +97,13 @@ Target PC ─WebRTC P2P─> Controller PC (works across networks)
 - **LilyGO T-Display-S3** ($12) - Has screen, no keyboard
 - **Any ESP32-S3 with USB OTG support**
 
-**Raspberry Pi Zero alternatives:**
-- **Pi Zero W** ($10) + USB gadget mode - Would work but requires Python/Linux setup
-- **Pi Zero 2 W** ($15) - Faster, same USB gadget capability
+**Raspberry Pi alternatives:**
+- **Pi Pico W** ($6) - ✅ **Works!** USB HID + WiFi/BLE - See [PICOW.md](docs/PICOW.md)
+- **Pi Pico 2 W** ($7) - ✅ **Works!** Faster, same capabilities
+- **Pi Zero W** ($10) - ✅ USB gadget mode (requires Python/Linux setup)
+- **Pi Zero 2 W** ($15) - ✅ Faster, same USB gadget capability
 
 **NOT compatible:**
-- ❌ Pi Pico W / Pico 2 W - No USB OTG
 - ❌ Regular ESP32 (non-S3) - No USB OTG
 - ❌ ESP8266 - No USB at all
 
