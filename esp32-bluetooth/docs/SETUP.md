@@ -1,4 +1,4 @@
-# NanoKVM-BT Setup Guide
+# Kmputer Setup Guide
 
 ## Prerequisites
 
@@ -73,11 +73,11 @@
 
 Follow installation steps above. On first boot, you should see:
 ```
-NanoKVM-BT: Starting...
+Kmputer: Starting...
 USB HID ready!
 BLE ready!
 Waiting for connection...
-Device: NanoKVM-BT
+Device: Kmputer
 ```
 
 ### 2. Connect to Target Computer
@@ -85,7 +85,7 @@ Device: NanoKVM-BT
 1. Plug Cardputer into target computer via USB-C
 2. Target should recognize:
    - Vendor: NanoKVM Project
-   - Product: NanoKVM-BT Controller
+   - Product: Kmputer Controller
    - VID: 0xFEED
    - PID: 0xAE01
 
@@ -97,7 +97,7 @@ Device: NanoKVM-BT
 ```bash
 bluetoothctl
 scan on
-# Wait for "NanoKVM-BT" to appear
+# Wait for "Kmputer" to appear
 pair [MAC_ADDRESS]
 # Enter PIN shown on Cardputer screen
 connect [MAC_ADDRESS]
@@ -105,13 +105,13 @@ connect [MAC_ADDRESS]
 
 **On Windows:**
 1. Settings → Bluetooth & devices → Add device
-2. Select "NanoKVM-BT"
+2. Select "Kmputer"
 3. Enter PIN shown on Cardputer screen
 4. Click "Connect"
 
 **On macOS:**
 1. System Preferences → Bluetooth
-2. Select "NanoKVM-BT"
+2. Select "Kmputer"
 3. Enter PIN shown on Cardputer screen
 
 ### 4. Set Up Video Capture
@@ -137,7 +137,7 @@ export class BluetoothPort {
 
   async connect() {
     this.device = await navigator.bluetooth.requestDevice({
-      filters: [{ name: 'NanoKVM-BT' }],
+      filters: [{ name: 'Kmputer' }],
       optionalServices: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']
     });
 
@@ -205,7 +205,7 @@ Add to `setup()`:
 ```cpp
 // Test keyboard
 delay(3000);
-Keyboard.print("Hello from NanoKVM-BT!");
+Keyboard.print("Hello from Kmputer!");
 
 // Test mouse
 Mouse.move(100, 100);
@@ -215,7 +215,7 @@ Mouse.click(MOUSE_LEFT);
 ### Test Bluetooth (without USB HID)
 
 Use a BLE scanner app (nRF Connect, LightBlue) to:
-1. Scan for "NanoKVM-BT"
+1. Scan for "Kmputer"
 2. Connect to service 6E400001-...
 3. Write to characteristic 6E400002-...
 4. Check serial monitor for received data

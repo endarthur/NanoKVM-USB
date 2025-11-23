@@ -1,4 +1,4 @@
-# NanoKVM-BT: Bluetooth-Controlled USB HID for ESP32
+# Kmputer: Bluetooth-Controlled USB HID for ESP32
 
 ESP32-S3 firmware for M5Stack Cardputer that enables wireless KVM control via Bluetooth, replacing the direct USB connection with a Bluetooth link.
 
@@ -22,7 +22,7 @@ Controller PC ← USB HDMI Capture Card ← Target PC (video)
 **Current (Development):**
 - VID: `0xFEED` (DIY keyboard community standard)
 - PID: `0xAE01` (Arthur Endlein initials)
-- Product: "NanoKVM-BT Controller"
+- Product: "Kmputer Controller"
 - Manufacturer: "NanoKVM Project"
 
 **Future (Production):**
@@ -82,14 +82,14 @@ pio run -t upload
 ### 2. Pair Device
 1. Power on Cardputer
 2. Enable Bluetooth on controller PC
-3. Look for "NanoKVM-BT" device
+3. Look for "Kmputer" device
 4. Enter PIN shown on Cardputer screen
 
 ### 3. Modify Browser App
 Replace Web Serial API with Web Bluetooth API:
 ```typescript
 const device = await navigator.bluetooth.requestDevice({
-  filters: [{ name: 'NanoKVM-BT' }],
+  filters: [{ name: 'Kmputer' }],
   optionalServices: ['serial_port_service']
 });
 ```
@@ -108,7 +108,7 @@ Once tested and stable, we'll submit for official PID allocation:
    - ✅ Hardware + software both open source
 
 2. **Submission Info:**
-   - Project: NanoKVM-BT Controller
+   - Project: Kmputer Controller
    - Description: Bluetooth-controlled USB HID KVM device for ESP32-S3
    - Repository: https://github.com/endarthur/NanoKVM-USB
    - License: GNU GPL v3
